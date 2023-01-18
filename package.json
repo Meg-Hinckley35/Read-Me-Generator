@@ -1,0 +1,19 @@
+{
+  "name": "read-me-generator",
+  "version": "1.0.0",
+  "description": "generates ReadMe files through prompts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Meg-Hinckley35/Read-Me-Generator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Meg-Hinckley35/Read-Me-Generator/issues"
+  },
+  "homepage": "https://github.com/Meg-Hinckley35/Read-Me-Generator#readme"
+}
