@@ -11,17 +11,17 @@ inquirer.prompt(
     }
     {
         type: 'input',
-        message: "description",
+        message: "Please add a brief description of what your project is about.",
         name: 'description',
     }
     {
         type: 'input',
-        message: "Table of Contents",
+        message: "Please add a short Table of Contents.",
         name: 'contents'
     }
     {
         type: 'input',
-        message: "Installation",
+        message: "Please add a brief Installation guide.",
         name: 'installation',
     }
     {
@@ -37,21 +37,72 @@ inquirer.prompt(
     //license options
     {
         type: 'list',
-        message: "",
+        message: "Choose which license you would like to have.",
         name: 'license',
         choices: ['The MIT License', 'The GPL License', 'Apache License', 'GNU License', 'Other'],
     }
     {
         type:'input',
-        message: "Github",
+        message: "Please add your github URL.",
         name: 'github',
     }
     {
         type: 'input',
-        message: "email",
+        message: "How can users contact you? Please provide your email.",
         name: 'email',
     }
 ]
-).then((
+).then(({
+    title,
+    description,
+    contents,
+    installation,
+    usage,
+    contributions,
+    license,
+    github,
+    email
+})=> {
+    //template to be used:
+    const template = `# ${title}
+    *[Description]{#description}
+    *[Table of Contents]{#contents}
+    *[Installation]{#installation}
+    *[Usage]{#usage}
+    *[Contributions]{#contributions}
+    *[License]{#license}
+    *[Github]{#github}
+    *[Email]{#email}
+    ## Description
+    ${description}
+    ## Table of Contents
+    ${contents}
+    ## Installation
+    ${installation}
+    ## Usage
+    ${usage}
+    ## Contributions
+    ${contributions}
+    ## License
+    ${license}
+    ## Github
+    ${github}
+    ## Email
+    ${email};`
 
-))
+    // function for creating the ReadMe file using fs
+    creatNewfile(title, template);
+}
+);
+
+// function to create our function
+function creatNewfile(fileName, data){
+    //fs
+    fs.writeFile(`./${fileName.toLowerCase().split(' ').join('')}.md`,data,(err)=>{
+        if(err){
+            console.log(err)
+        }
+        console.log('README has been generated');
+    })
+}
+
