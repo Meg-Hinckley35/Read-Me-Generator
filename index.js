@@ -1,108 +1,86 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
+const path = require("path");
+const generateMarkdown = require("./utils/generateMarkdown");
 
 // questions
-inquirer.prompt(
-[
+const questions = [
     {
-        type: 'input',
+        type: "input",
         message: "What is the name of your Project?",
-        name: 'title',
-    }
+        name: "title",
+    },
     {
-        type: 'input',
+        type: "input",
         message: "Please add a brief description of what your project is about.",
-        name: 'description',
-    }
+        name: "description",
+    },
     {
-        type: 'input',
-        message: "Please add a short Table of Contents.",
-        name: 'contents'
-    }
+        type: "input",
+        message: "List some cool features about this project here.",
+        name: "features"
+    },
     {
-        type: 'input',
+        type: "input",
+        name: "link",
+        message: "Please provide a URL where a user can access your deployed application."
+    },
+    {
+        type: "input",
+        name: "require",
+        message: "List any project dependencies here.",
+    },
+    {
+        type: "input",
         message: "Please add a brief Installation guide.",
-        name: 'installation',
-    }
+        name: "installation",
+    },
     {
-        type: 'input',
-        message: "Usage",
-        name: 'usage',
-    }
+        type: "input",
+        message: "What are the languages or technologies associated with this project",
+        name: "usage",
+    },
     {
-        type: 'input',
-        message: "Contributions",
-        name: 'contributions',
-    }
+        type: "input",
+        message: "Please list any contributors. (Use GitHub usernames)",
+        name: "contributors"
+    },
     //license options
     {
-        type: 'list',
+        type: "checkbox",
         message: "Choose which license you would like to have.",
-        name: 'license',
+        name: "license",
         choices: ['The MIT License', 'The GPL License', 'Apache License', 'GNU License', 'Other'],
-    }
+    },
     {
-        type:'input',
+        type:"input",
         message: "Please add your github URL.",
-        name: 'github',
-    }
+        name: "github",
+    },
     {
-        type: 'input',
+        type: "input",
         message: "How can users contact you? Please provide your email.",
-        name: 'email',
-    }
-]
-).then(({
-    title,
-    description,
-    contents,
-    installation,
-    usage,
-    contributions,
-    license,
-    github,
-    email
-})=> {
-    //template to be used:
-    const template = `# ${title}
-    *[Description]{#description}
-    *[Table of Contents]{#contents}
-    *[Installation]{#installation}
-    *[Usage]{#usage}
-    *[Contributions]{#contributions}
-    *[License]{#license}
-    *[Github]{#github}
-    *[Email]{#email}
-    ## Description
-    ${description}
-    ## Table of Contents
-    ${contents}
-    ## Installation
-    ${installation}
-    ## Usage
-    ${usage}
-    ## Contributions
-    ${contributions}
-    ## License
-    ${license}
-    ## Github
-    ${github}
-    ## Email
-    ${email};`
+        name: "email",
+    },
+    {
+        type: "input",
+        name: "test",
+        message: "Provide walkthrough of required tests if applicable.",
+    },
+];
 
-    // function for creating the ReadMe file using fs
-    creatNewfile(title, template);
-}
-);
-
-// function to create our function
-function creatNewfile(fileName, data){
+// function to write our read me file
+function writeToFile(fileName, data){
     //fs
-    fs.writeFile(`./${fileName.toLowerCase().split(' ').join('')}.md`,data,(err)=>{
-        if(err){
-            console.log(err)
-        }
-        console.log('README has been generated');
-    })
+    return fs.writeFileSync(path.join(process.cwd(), fileName), data);
+        
 }
 
+// Initializing app
+function init() {
+    inquirer.prompt(questions).then((responses) => {
+      console.log("Creating Professional README.md File...");
+      writeToFile("./dist/README.md", generateMarkdown({ ...responses }));
+    });
+  }
+  init();
